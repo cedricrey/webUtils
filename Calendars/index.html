@@ -417,109 +417,108 @@ td > span:active{
   <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
       <script id="rendered-js" >
 const weekDays = [
-'LUN', 'MAR', 'MER', 'JEU', 'VEN', 'SAM', 'DIM'];
-
+  'LUN','MAR','MER','JEU','VEN','SAM','DIM'
+];
 const monthName = [
-'JANVIER', 'FEVRIER', 'MARS', 'AVRIL', 'MAI', 'JUIN', 'JUILLET', 'AOÛT', 'SEPTEMBRE', 'OCTOBRE', 'NOVEMBRE', 'DÉCEMBRE'];
+  'JANVIER','FEVRIER','MARS','AVRIL','MAI','JUIN','JUILLET','AOÛT','SEPTEMBRE','OCTOBRE','NOVEMBRE','DÉCEMBRE'
+];
 
-
-function displayMonth(numMonth, fullYear) {
-  var newPlanner = $('.planner-template').clone();
+function displayMonth(numMonth, fullYear){
+ var newPlanner = $('.planner-template').clone();
   newPlanner.removeClass('planner-template');
-  $('#monthName', newPlanner).text(monthName[numMonth - 1] + " " + fullYear);
-  var today = new Date(`${fullYear}-${numMonth}-01`);
-  today.setDate(32);
-  today.setDate(0);
-  var lastDay = new Date(today);
-  today.setDate(1);
-  var firstDay = new Date(today);
-  //console.log(firstDay.toString())
-  //console.log(lastDay.toString());
+ $('#monthName',newPlanner).text(monthName[numMonth - 1] + " " + fullYear )
+var today = new Date(`${fullYear}-${numMonth}-01`);
+today.setDate(32)
+today.setDate(0)
+var lastDay = new Date(today);
+today.setDate(1);
+var firstDay = new Date(today);
+//console.log(firstDay.toString())
+//console.log(lastDay.toString());
 
-  //console.log(firstDay.getDay())
-  /*
-   0, 1, 2, 3, 4, 5, 6
-   6, 0, 1, 2, 3, 4, 5 => NON DUCON
-   6, 7, 8, 9,10,11,12 => OUI...
-   %7 = 
-   6, 0, 1, 2, 3, 4, 5
-   *-1 = 
-  -6, 0,-1,-2,-3,-4,-5
-  */
-  var firstDisplayDay = new Date(firstDay);
-  //LUNDI => PREMIER JOUR (ET PAS DIMANCHE, BANDE DE TANCHES...)
-  firstDisplayDay.setDate(firstDisplayDay.getDate() - (firstDay.getDay() + 6) % 7);
-  //console.log( firstDisplayDay.toString() )
+//console.log(firstDay.getDay())
+/*
+ 0, 1, 2, 3, 4, 5, 6
+ 6, 0, 1, 2, 3, 4, 5 => NON DUCON
+ 6, 7, 8, 9,10,11,12 => OUI...
+ %7 = 
+ 6, 0, 1, 2, 3, 4, 5
+ *-1 = 
+-6, 0,-1,-2,-3,-4,-5
+*/
+var firstDisplayDay = new Date(firstDay);
+//LUNDI => PREMIER JOUR (ET PAS DIMANCHE, BANDE DE TANCHES...)
+firstDisplayDay.setDate(firstDisplayDay.getDate() - ((firstDay.getDay()+6) % 7));
+//console.log( firstDisplayDay.toString() )
 
 
-  var lastDisplayDay = new Date(lastDay);
-  lastDisplayDay.setDate(lastDisplayDay.getDate() + (6 - (lastDisplayDay.getDay() + 6) % 7));
-  //console.log( lastDisplayDay.toString() )
-  var pointerDate = new Date(firstDisplayDay);
-  for (var i = 0; pointerDate <= lastDisplayDay; pointerDate.setDate(pointerDate.getDate() + 1), i++)
-  {if (window.CP.shouldStopExecution(0)) break;
-    //console.log(pointerDate.toString());
+var lastDisplayDay = new Date(lastDay);
+lastDisplayDay.setDate( lastDisplayDay.getDate() + (6 - (lastDisplayDay.getDay()+6)%7) )
+//console.log( lastDisplayDay.toString() )
+var pointerDate = new Date(firstDisplayDay);
+for(var i=0;pointerDate <= lastDisplayDay; pointerDate.setDate(pointerDate.getDate() + 1), i++)
+  {
+  //console.log(pointerDate.toString());
     //console.log(`#calTable tbody tr[${Math.floor(i/7)}] td[${i%7}]`);
-    var currSpanDate = $(`#calTable tbody tr:nth-child(${Math.floor(i / 7) + 1}) td:nth-child(${i % 7 + 1}) span`, newPlanner);
+    var currSpanDate = $(`#calTable tbody tr:nth-child(${Math.floor(i/7)+1}) td:nth-child(${i%7 +1}) span`,newPlanner);
     currSpanDate.text(pointerDate.getDate());
-    if (pointerDate.getMonth() + 1 != numMonth)
-    {
-      currSpanDate.addClass('outOfMonth');
-    } else
-
-    currSpanDate.removeClass('outOfMonth');
+    if(pointerDate.getMonth() + 1 != numMonth)
+      {
+       currSpanDate.addClass('outOfMonth');
+      }
+    else
+       currSpanDate.removeClass('outOfMonth');
   }
   //console.log("i: " + Math.floor(i/7))
   //console.log(i + " " + lastDisplayDay)
   //i--;
-  window.CP.exitedLoop(0);var lastWeekNum = Math.floor(i / 7);
+  var lastWeekNum = Math.floor(i/7);
   //console.log(i + " " + lastWeekNum)
-  if (lastWeekNum < 6)
-  {
-    $('#calTable', newPlanner).removeClass('compress');
-  } else
-
-  $('#calTable', newPlanner).addClass('compress');
-  $(`#calTable tbody tr`, newPlanner).show();
-  for (lastWeekNum++; lastWeekNum < 7; lastWeekNum++)
-  {if (window.CP.shouldStopExecution(1)) break;
-    //console.log(monthName[numMonth - 1] + " is hidding " + lastWeekNum)
-    $(`#calTable tbody tr:nth-child(${lastWeekNum})`, newPlanner).hide();
-    //$('#calTable').addClass('compress');  
-  }
+  if( lastWeekNum < 6)
+    {      
+      $('#calTable',newPlanner).removeClass('compress');
+    }
+  else
+    $('#calTable',newPlanner).addClass('compress');
+  $(`#calTable tbody tr`,newPlanner).show();
+  for(lastWeekNum++;lastWeekNum < 7;lastWeekNum++)
+    {  
+      //console.log(monthName[numMonth - 1] + " is hidding " + lastWeekNum)
+      $(`#calTable tbody tr:nth-child(${lastWeekNum})`,newPlanner).hide();
+      //$('#calTable').addClass('compress');  
+    }
   /*
-    if( lastWeekNum < 6)
-      {
-        $(`#calTable tbody tr:nth-child(6)`).hide();
-        $('#calTable').removeClass('compress');
-      }
-    else
-      {
-        $(`#calTable tbody tr:nth-child(6)`).show();
-        $('#calTable').addClass('compress');      
-      }
-    */window.CP.exitedLoop(1);
-  $(".calendar-header .btn-next", newPlanner).hide();
-
-  $(".calendar-header .btn-prev", newPlanner).hide();
+  if( lastWeekNum < 6)
+    {
+      $(`#calTable tbody tr:nth-child(6)`).hide();
+      $('#calTable').removeClass('compress');
+    }
+  else
+    {
+      $(`#calTable tbody tr:nth-child(6)`).show();
+      $('#calTable').addClass('compress');      
+    }
+  */ 
+  $(".calendar-header .btn-next",newPlanner).hide();
+  
+  $(".calendar-header .btn-prev",newPlanner).hide();
   $('.planners').append(newPlanner);
   $('.planners').append($('<div class="pageSep"/>'));
-}
+  }
 
 //var now = new Date();
 var startDate = new Date('2020-01-01');
 var endDate = new Date('2020-03-01');
 var search = document.location.search.substr(1).split('&');
 var searches = {};
-search.forEach(s => searches[s.split('=')[0]] = s.split('=')[1]);
-console.log(searches);
-if (searches['start'])
-startDate = new Date(searches['start']);
-if (searches['end'])
-endDate = new Date(searches['end']);
-for (var currMonth = new Date(startDate); currMonth <= endDate; currMonth.setMonth(currMonth.getMonth() + 1)) {if (window.CP.shouldStopExecution(2)) break;
-  displayMonth(currMonth.getMonth() + 1, currMonth.getFullYear());}window.CP.exitedLoop(2);
-//# sourceURL=pen.js
+search.forEach((s) => searches[s.split('=')[0]] = s.split('=')[1])
+console.log(searches)
+if(searches['start'])
+  startDate = new Date(searches['start']);
+if(searches['end'])
+  endDate = new Date(searches['end']);
+for(var currMonth = new Date(startDate); currMonth <= endDate; currMonth.setMonth( currMonth.getMonth() + 1))
+  displayMonth(currMonth.getMonth() + 1, currMonth.getFullYear() );
     </script>
 
   
