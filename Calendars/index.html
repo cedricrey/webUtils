@@ -507,8 +507,10 @@ for(var i=0;pointerDate <= lastDisplayDay; pointerDate.setDate(pointerDate.getDa
   }
 
 //var now = new Date();
-var startDate = new Date('2020-01-01');
-var endDate = new Date('2020-03-01');
+var startDate = new Date();
+startDate.setMonth(0);
+var endDate = new Date();
+endDate.setMonth(11);
 var search = document.location.search.substr(1).split('&');
 var searches = {};
 search.forEach((s) => searches[s.split('=')[0]] = s.split('=')[1])
@@ -519,7 +521,9 @@ if(searches['end'])
   endDate = new Date(searches['end']);
 for(var currMonth = new Date(startDate); currMonth <= endDate; currMonth.setMonth( currMonth.getMonth() + 1))
   displayMonth(currMonth.getMonth() + 1, currMonth.getFullYear() );
-    </script>
+  
+  
+</script>
 
   
 
