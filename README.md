@@ -1,2 +1,2 @@
 # webUtils
-differents kind of utilities, available on github.io
+different kinds of utilities, available on github.io
