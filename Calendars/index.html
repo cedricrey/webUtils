@@ -76,6 +76,7 @@ td{
 	font-weight: normal;
 	font-size: 12px;
 	text-align: center;
+	width: calc(100%/7);
 }
 
 
@@ -91,6 +92,12 @@ td > span{
 }
 .compress td > span{
   height:86px;
+}
+span.highlight{
+	line-height: 3em;
+}
+span.highlight:before{
+  content:'⭐️ ';
 }
  td > span.outOfMonth{
   color:rgba(0,0,0,0.2);
@@ -297,8 +304,11 @@ td > span:active{
 }
 
 @media print and (max-aspect-ratio: 3/4){
-  td > span, .compress td > span{
+  td > span{
   height:164px;
+  }
+  .compress td > span{
+  height:144px;
   }
 }
 </style>
@@ -462,7 +472,16 @@ for(var i=0;pointerDate <= lastDisplayDay; pointerDate.setDate(pointerDate.getDa
     //console.log(`#calTable tbody tr[${Math.floor(i/7)}] td[${i%7}]`);
     var currSpanDate = $(`#calTable tbody tr:nth-child(${Math.floor(i/7)+1}) td:nth-child(${i%7 +1}) span`,newPlanner);
     currSpanDate.text(pointerDate.getDate());
-    if(pointerDate.getMonth() + 1 != numMonth)
+	var currDateStr = getStrDate( pointerDate );
+	if(highlight[currDateStr])
+	    {
+		   currSpanDate.addClass('highlight');
+		   if(highlight[currDateStr].text)
+		   		currSpanDate.html(currSpanDate.text() + "<br/>" + highlight[currDateStr].text);
+		   else
+		   		currSpanDate.html(currSpanDate.text() + "<br/>" + highlight[currDateStr]);
+		}
+	if(pointerDate.getMonth() + 1 != numMonth)
       {
        currSpanDate.addClass('outOfMonth');
       }
@@ -505,6 +524,9 @@ for(var i=0;pointerDate <= lastDisplayDay; pointerDate.setDate(pointerDate.getDa
   $('.planners').append(newPlanner);
   $('.planners').append($('<div class="pageSep"/>'));
   }
+function getStrDate( date ){
+	return `${date.getFullYear()}-${("0" + (date.getMonth() + 1)).slice(-2)}-${("0" + (date.getDate())).slice(-2)}`
+}
 
 //var now = new Date();
 var startDate = new Date();
@@ -519,6 +541,12 @@ if(searches['start'])
   startDate = new Date(searches['start']);
 if(searches['end'])
   endDate = new Date(searches['end']);
+else if(searches['start'])
+  {endDate = new Date(startDate);endDate.setMonth( endDate.getMonth() + 12 );}
+var highlight = {};
+console.log( decodeURIComponent(searches['highlight']) )
+if(searches['highlight'])
+	highlight = JSON.parse(decodeURIComponent(searches['highlight']));
 for(var currMonth = new Date(startDate); currMonth <= endDate; currMonth.setMonth( currMonth.getMonth() + 1))
   displayMonth(currMonth.getMonth() + 1, currMonth.getFullYear() );
   
