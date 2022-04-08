@@ -1,629 +1,660 @@
-
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 
 <head>
 
-  <meta charset="UTF-8">
-  <title>Générateur de calendrier</title>
-  
-  
-  
-  
-<style>
-*{
-  box-sizing: border-box;
-}
-div, ul, li{
-	list-style-type: none;
-}
-.planner-template{
-  display:none;
-}
-.planner{
-	font-family: 'Open Sans', sans-serif;
-	width: 100%;
-	margin: 1em auto;
-	
-	border-radius: 5px;
-	overflow: hidden;
-}
-
-.calendar{
-
-	padding: 10px;
-	background-color: #FFF;
-}
-
-.calendar-header{
-	color: #666;
-	height: 100%;
-	margin: 0; padding: 0;
-	text-align: center;
-	line-height: 0px;
-	font-size: 0px;
-	padding-bottom: 10px;
-	font-family: "Permanent Marker";
-  }
-	
-	.calendar-header span{
-		display: inline-block;
-		font-size: 30px;
-		font-weight: 200;
-		text-align: center;
-		line-height: 24px;
-	}
-	
-	.calendar-header:after{
-		content: '';
-		display: inline-block;
-		width: 100%;
-	}   
+    <meta charset="UTF-8">
+    <title>Générateur de calendrier</title>
 
 
-table{
-	width: 18cm;
-	padding: 10px;
-	color: #666;
-	margin:auto;
-	font-family: "Montserrat";
-}
-.month-1 table, .month-1 .calendar-header{
-	color:#ac6b37;
-}
-.month-2 table, .month-2 .calendar-header{
-	color:#37ac54;
-}
-.month-3 table, .month-3 .calendar-header{
-	color:#3752ac;
-}
-.month-4 table, .month-4 .calendar-header{
-	color:#9c219c;
-}
-.month-5 table, .month-5 .calendar-header{
-	color:#2a920b;
-}
-.month-6 table, .month-6 .calendar-header{
-	color:#b9a119;
-}
-.month-7 table, .month-7 .calendar-header{
-	color:#37ac7f;
-}
-.month-8 table, .month-8 .calendar-header{
-	color:#d874bf;
-}
-.month-9 table, .month-9 .calendar-header{
-	color:#37ac54;
-}
-.month-10 table, .month-10 .calendar-header{
-	color:#3752ac;
-}
-.month-11 table, .month-11 .calendar-header{
-	color:#304435;
-}
-.month-12 table, .month-12 .calendar-header{
-	color:#ac377b;
-}
-th{
-	font-weight: normal;
-	font-size: 14px;
-	color: #5b5b5b;
-}
-
-td{
-	font-weight: normal;
-	font-size: 12px;
-	text-align: center;
-}
 
 
-td > span{
-	display: inline-block;
-	text-align: center;
-	font-size:0.5cm;
-	padding: 3px 10px; margin: 0px;
-	width: 100%; height: 60px;
-	line-height: 60px;
-	/*border: 1px solid #CCC;*/
-	border-radius: 8px;
-	background-color:#FFF;
-}
- td > span.outOfMonth{
-  color:rgba(0,0,0,0.2);
-  /*background-color:rgba(0,0,0,0.05);
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        div,
+        ul,
+        li {
+            list-style-type: none;
+        }
+        
+        .planner-template {
+            display: none;
+        }
+        
+        .planner {
+            font-family: 'Open Sans', sans-serif;
+            width: 100%;
+            margin: 1em auto;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .calendar {
+            padding: 10px;
+            background-color: #FFF;
+        }
+        
+        .calendar-header {
+            color: #666;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            line-height: 0px;
+            font-size: 0px;
+            padding-bottom: 10px;
+            font-family: "Permanent Marker";
+        }
+        
+        .calendar-header span {
+            display: inline-block;
+            font-size: 30px;
+            font-weight: 200;
+            text-align: center;
+            line-height: 24px;
+        }
+        
+        .calendar-header:after {
+            content: '';
+            display: inline-block;
+            width: 100%;
+        }
+        
+        table {
+            width: 18cm;
+            padding: 10px;
+            color: #666;
+            margin: auto;
+            font-family: "Montserrat";
+        }
+        
+        .month-1 table,
+        .month-1 .calendar-header {
+            color: #ac6b37;
+        }
+        
+        .month-2 table,
+        .month-2 .calendar-header {
+            color: #37ac54;
+        }
+        
+        .month-3 table,
+        .month-3 .calendar-header {
+            color: #3752ac;
+        }
+        
+        .month-4 table,
+        .month-4 .calendar-header {
+            color: #9c219c;
+        }
+        
+        .month-5 table,
+        .month-5 .calendar-header {
+            color: #2a920b;
+        }
+        
+        .month-6 table,
+        .month-6 .calendar-header {
+            color: #b9a119;
+        }
+        
+        .month-7 table,
+        .month-7 .calendar-header {
+            color: #37ac7f;
+        }
+        
+        .month-8 table,
+        .month-8 .calendar-header {
+            color: #d874bf;
+        }
+        
+        .month-9 table,
+        .month-9 .calendar-header {
+            color: #37ac54;
+        }
+        
+        .month-10 table,
+        .month-10 .calendar-header {
+            color: #3752ac;
+        }
+        
+        .month-11 table,
+        .month-11 .calendar-header {
+            color: #304435;
+        }
+        
+        .month-12 table,
+        .month-12 .calendar-header {
+            color: #ac377b;
+        }
+        
+        th {
+            font-weight: normal;
+            font-size: 14px;
+            color: #5b5b5b;
+        }
+        
+        td {
+            font-weight: normal;
+            font-size: 12px;
+            text-align: center;
+        }
+        
+        td>span {
+            display: inline-block;
+            text-align: center;
+            font-size: 0.5cm;
+            padding: 3px 10px;
+            margin: 0px;
+            width: 100%;
+            height: 60px;
+            line-height: 60px;
+            /*border: 1px solid #CCC;*/
+            border-radius: 8px;
+            background-color: #FFF;
+        }
+        
+        td>span.outOfMonth {
+            color: rgba(0, 0, 0, 0.2);
+            /*background-color:rgba(0,0,0,0.05);
   border-color:rgba(0,0,0,0.05);*/
-}	
-td > span:hover{
-		 font-weight: bold; 
-	}
+        }
+        
+        td>span:hover {
+            font-weight: bold;
+        }
+        
+        td>span:active {
+            border: 2px solid #98cd60;
+            border-radius: 50px;
+        }
+        
+        .schedule {
+            margin: 0;
+        }
+        
+        .tabs {
+            margin: 0;
+            padding: 0;
+            text-align: justify;
+            line-height: 0px;
+            font-size: 0px;
+            background-color: #6b6b6b;
+        }
+        
+        .tabs .tab {
+            display: inline-block;
+            width: 33.3333%;
+            background-color: #6b6b6b;
+            text-align: center;
+            color: #333333;
+            margin: 0;
+            padding: 0;
+            border: 0px none;
+            line-height: 38px;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+        
+        .tab:active {
+            background-color: #999999;
+            color: #ffffff;
+            font-weight: 600;
+        }
+        
+        .tab:avtive:hover {
+            background-color: #999999;
+        }
+        
+        .tabs .tab:hover {
+            background-color: #777777;
+        }
+        
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+        
+        .tabs:after {
+            content: '';
+            width: 100%;
+            display: inline-block;
+        }
+        
+        .schedule-list {
+            padding: 20px;
+            margin-left: 37px;
+            border-left: 2px solid #cccccc;
+            display: block;
+        }
+        
+        .schedule-item {
+            display: block;
+            margin-bottom: 50px;
+            padding: 0;
+            clear: both;
+            min-height: 100px;
+            overflow: visible;
+        }
+        
+        .schedule-item:last-child {
+            margin-bottom: 10px;
+            min-height: 30px;
+        }
+        
+        .time {
+            display: block;
+            float: left;
+            margin-left: -41px;
+            width: 36px;
+            height: 36px;
+            border: 2px solid #cccccc;
+            background-color: #ffffff;
+            color: #cccccc;
+            border-radius: 40px;
+            text-align: center;
+            padding: 0px;
+            line-height: 25px;
+        }
+        
+        .time span {
+            font-size: 12px;
+            height: 10px;
+            margin: auto;
+            display: block;
+        }
+        
+        .description {
+            display: block;
+            float: left;
+            width: 305px;
+            margin-top: 10px;
+            margin-left: 10px;
+            color: #fd9a4a;
+            font-size: 14px;
+            overflow: visible;
+        }
+        
+        .description .description-content {
+            margin-top: 5px;
+        }
+        
+        .description .description-content p {
+            font-size: 12px;
+            margin: 0;
+            color: #c5c5c5;
+        }
+        
+        .description .description-content ul.contact-list {
+            margin: 0;
+            margin-top: 10px;
+            padding: 0;
+        }
+        
+        .description .description-content ul.contact-list li.contact {
+            overflow: hidden;
+            display: block;
+            float: left;
+            margin: 0;
+            padding: 0;
+            border: 2px solid fadeout(#98cd60, 75%);
+            border-radius: 60px;
+            width: 56px;
+            height: 56px;
+            text-decoration: none;
+            text-align: center;
+            margin-right: 10px;
+            transition: all 0.2s;
+        }
+        
+        .description .description-content ul.contact-list li.contact img {
+            width: 60px;
+            height: 60px;
+        }
+        
+        .description .description-content ul.contact-list li.contact:hover {
+            border: 2px solid #98cd60;
+        }
+        
+        .description .description-content ul.contact-list li.contact.add-contact {
+            color: #98cd60;
+            font-size: 20px;
+            line-height: 60px;
+        }
+        
+        .description .description-content ul.contact-list li.contact.add-contact a {
+            color: inherit;
+            text-decoration: none;
+        }
+        
+        .description .description-content ul.contact-list li.contact .add-contact a:hover {
+            background-color: fadeout(#98cd60, 75%);
+        }
+        
+        .schedule-item.free .time {
+            border: 2px solid #98cd60;
+        }
+        
+        .schedule-item.free .description .description-header {
+            background-color: #ffffff;
+            color: #c5c5c5;
+            display: block;
+            float: left;
+        }
+        
+        .schedule-item.free .description .description-content {
+            margin-left: 5px;
+            margin-top: 0;
+            content: '';
+            width: 215px;
+            display: block;
+            float: right;
+            background-repeat: no-repeat;
+            background-position: right center;
+        }
+        
+        @media print {
+            .calendar-header .btn {
+                display: none;
+            }
+            .pageSep {
+                page-break-after: always;
+            }
+        }
+        
+        @media print and (max-aspect-ratio: 3/4) {
+            td>span {
+                height: 164px;
+            }
+            .compress td>span {
+                height: 144px;
+            }
+        }
+        
+        @media print {
+            .printFullPage .calendar-header {
+                height: 95vh;
+                line-height: 100vh;
+            }
+            .printFullPage .calTable {
+                height: 85vh;
+                width: 75vw;
+            }
+            .printFullPage .planner .calendar-header {
+                color: #FFF;
+            }
+            .printFullPage .planner .calendar-header span {
+                font-size: 2cm;
+            }
+            .printFullPage .month-1 .calendar-header {
+                background: linear-gradient(#ac6b37, #ac6c3742);
+            }
+            .printFullPage .month-2 .calendar-header {
+                background: linear-gradient(#37ac54, #37ac5442);
+            }
+            .printFullPage .month-3 .calendar-header {
+                background: linear-gradient(#3752ac, #3752ac42);
+            }
+            .printFullPage .month-4 .calendar-header {
+                background: linear-gradient(#9c219c, #9c219c42);
+            }
+            .printFullPage .month-5 .calendar-header {
+                background: linear-gradient(#2a920b, #2a920b42);
+            }
+            .printFullPage .month-6 .calendar-header {
+                background: linear-gradient(#b9a119, #b9a11942);
+            }
+            .printFullPage .month-7 .calendar-header {
+                background: linear-gradient(#37ac7f, #37ac7f42);
+            }
+            .printFullPage .month-8 .calendar-header {
+                background: linear-gradient(#d874bf, #d874bf42);
+            }
+            .printFullPage .month-9 .calendar-header {
+                background: linear-gradient(#37ac54, #37ac5442);
+            }
+            .printFullPage .month-10 .calendar-header {
+                background: linear-gradient(#3752ac, #3752ac42);
+            }
+            .printFullPage .month-11 .calendar-header {
+                background: linear-gradient(#304435, #30443542);
+            }
+            .printFullPage .month-12 .calendar-header {
+                background: linear-gradient(#ac377b, #ac377b42);
+            }
+        }
+    </style>
 
-td > span:active{
-		border: 2px solid #98cd60;
-		border-radius: 50px;
-	}
+    <script>
+        window.console = window.console || function(t) {};
+    </script>
 
 
 
-.schedule{
-	margin: 0;
-}
-
-.tabs{
-	margin: 0; padding: 0;
-	text-align: justify;
-	line-height: 0px;
-	font-size: 0px;
-  background-color: #6b6b6b;
-}	
-.tabs	.tab{
-		display: inline-block;
-		width: 33.3333%;
-		background-color: #6b6b6b;
-		text-align: center;
-		color: #333333;
-		margin: 0; padding: 0;
-		border: 0px none;
-		line-height: 38px;
-		font-size: 14px;
-		transition: background 0.2s;
-}
-	 
-.tab:active{
-			background-color: #999999;
-			color: #ffffff;
-			font-weight: 600;
-}
-			
-.tab:avtive:hover{
-			background-color: #999999;
-}
-
-		
-.tabs	.tab:hover{
-			background-color: #777777;
-		}
-		
-		a{
-			color: inherit;
-			text-decoration: none;
-		}
-  
-	.tabs:after{
-		content: '';
-		width: 100%;
-		display: inline-block;
-	}  
-
-
-.schedule-list{
-	padding: 20px;
-	margin-left: 37px;
-	border-left: 2px solid #cccccc;
-	display: block;
-}
-	
-.schedule-item{
-	display: block;
-	margin-bottom: 50px;
-	padding: 0;
-  clear: both;
-  min-height: 100px;
-  overflow: visible;
-}
-	
-.schedule-item:last-child{
-		margin-bottom: 10px;
-    min-height: 30px;
-	}
-	
-.time{
-		display: block;
-		float: left;
-		margin-left: -41px;
-		width: 36px; height: 36px;
-		border: 2px solid #cccccc;
-		background-color: #ffffff;
-		color: #cccccc;
-		border-radius: 40px;
-		text-align: center;
-		padding: 0px;
-		line-height: 25px;
-}	
-.time	span{
-			font-size: 12px;
-			height: 10px;
-			margin: auto;
-			display: block;
-		}
-	
-.description{
-		display: block;
-    float: left;
-    width: 305px;
-		margin-top: 10px;
-		margin-left: 10px;
-		color: #fd9a4a;
-		font-size: 14px;
-    overflow: visible;
-}
-		
-.description	.description-content{
-		margin-top: 5px;
-}
-.description	.description-content p {
-				font-size: 12px;
-				margin: 0;
-				color: #c5c5c5;
-			}
-			
-.description	.description-content	ul.contact-list{
-				margin: 0;
-				margin-top: 10px;
-				padding: 0;
-}
-.description	.description-content	ul.contact-list	li.contact{
-					overflow: hidden;
-					display: block;
-					float: left;
-					margin: 0; padding: 0;
-					border: 2px solid fadeout(#98cd60, 75%);
-					border-radius: 60px;
-					width: 56px; height: 56px;
-					text-decoration: none;
-					text-align: center;
-					margin-right: 10px;
-					transition: all 0.2s;
-}
-.description	.description-content	ul.contact-list	li.contact	img{
-						width: 60px; height: 60px;
-					}
-					
-.description	.description-content	ul.contact-list	li.contact:hover{
-						border: 2px solid #98cd60;          
-					}
-					
-.description	.description-content	ul.contact-list	li.contact.add-contact{
-						color: #98cd60;
-						font-size: 20px;
-						line-height: 60px;
-}
-.description	.description-content	ul.contact-list	li.contact.add-contact a{
-							color: inherit;
-							text-decoration: none;
-						}
-						
-.description .description-content	ul.contact-list	li.contact .add-contact a:hover{
-							background-color: fadeout(#98cd60, 75%);
-						}
-
-.schedule-item.free .time{
-			border: 2px solid #98cd60;
-		}
-      
-.schedule-item.free .description .description-header{
-        background-color: #ffffff;
-        color: #c5c5c5;
-        display: block;
-        float: left;
-
-			}
-      
-.schedule-item.free .description .description-content{
-        margin-left: 5px;
-        margin-top: 0;
-        content: '';
-        width: 215px;
-        display: block;
-        float: right;        
-        background-repeat: no-repeat;
-        background-position: right center;        
-      }
-@media print{
-  .calendar-header .btn{
-    display:none;
-  }
-  .pageSep{
-    page-break-after  : always;
-  }
-}
-
-@media print and (max-aspect-ratio: 3/4){
-  td > span{
-  height:164px;
-  }
-  .compress td > span{
-  height:144px;
-  }
-}
-@media print{
-	.printFullPage .calendar-header{
-		height: 95vh;
-		line-height: 100vh;
-	}
-	.printFullPage .calTable{
-		height: 85vh;
-		width:  75vw;
-	}
-	.printFullPage .planner .calendar-header{
-		color:#FFF;
-	}
-
-	.printFullPage .planner .calendar-header span {
-		font-size: 2cm;
-	}
-	.printFullPage .month-1 .calendar-header{
-		background:linear-gradient(#ac6b37,#ac6c3742) ;
-	}
-	.printFullPage .month-2 .calendar-header{
-		background:linear-gradient(#37ac54,#37ac5442);
-	}
-	.printFullPage .month-3 .calendar-header{
-		background:linear-gradient(#3752ac,#3752ac42);
-	}
-	.printFullPage .month-4 .calendar-header{
-		background:linear-gradient(#9c219c,#9c219c42);
-	}
-	.printFullPage .month-5 .calendar-header{
-		background:linear-gradient(#2a920b,#2a920b42);
-	}
-	.printFullPage .month-6 .calendar-header{
-		background:linear-gradient(#b9a119,#b9a11942);
-	}
-	.printFullPage .month-7 .calendar-header{
-		background:linear-gradient(#37ac7f,#37ac7f42);
-	}
-	.printFullPage .month-8 .calendar-header{
-		background:linear-gradient(#d874bf,#d874bf42);
-	}
-	.printFullPage .month-9 .calendar-header{
-		background:linear-gradient(#37ac54,#37ac5442);
-	}
-	.printFullPage .month-10 .calendar-header{
-		background:linear-gradient(#3752ac,#3752ac42);
-	}
-	.printFullPage .month-11 .calendar-header{
-		background:linear-gradient(#304435,#30443542);
-	}
-	.printFullPage .month-12 .calendar-header{
-		background:linear-gradient(#ac377b,#ac377b42);
-	}
-}
-</style>
-
-  <script>
-  window.console = window.console || function(t) {};
-</script>
-
-  
-  
-  <script>
-  if (document.location.search.match(/type=embed/gi)) {
-    window.parent.postMessage("resize", "*");
-  }
-</script>
+    <script>
+        if (document.location.search.match(/type=embed/gi)) {
+            window.parent.postMessage("resize", "*");
+        }
+    </script>
 
 
 </head>
 
-<body translate="no" >
-  <link href="//netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.min.css" rel="stylesheet">
-	
-<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Permanent+Marker:400,300,600,700,800' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Montserrat:400,300,600,700,800' rel='stylesheet' type='text/css'>
-<link rel="stylesheet" href="custom.css">
+<body translate="no">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.min.css" rel="stylesheet">
 
-<div class="planner-template planner">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Permanent+Marker:400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="custom.css">
 
-	<div class="calendar">
-		<div class="calendar-header">
+    <div class="planner-template planner">
 
-			<span class="btn btn-prev">
+        <div class="calendar">
+            <div class="calendar-header">
+
+                <span class="btn btn-prev">
 				<i class="icon-angle-left"></i>
 			</span>
-			<span class="" id="monthName">July</span>
-			
-			<span class="btn btn-next">
+                <span class="" id="monthName">July</span>
+
+                <span class="btn btn-next">
 				<i class="icon-angle-right"></i>
 			</span>
-		</div>
-		<table id="calTable" class="calTable">
-			<thead>
-				<tr>
-					<th>LUN</th>
-					<th>MAR</th>
-					<th>MER</th>
-					<th>JEU</th>
-					<th>VEN</th>
-					<th>SAM</th>
-					<th>DIM</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td><span>30</span></td>
-					<td><span>1</span></td>
-					<td><span class="active">2</span></td>
-					<td><span>3</span></td>
-					<td><span>4</span></td>
-					<td><span>5</span></td>
-					<td><span>6</span></td>
-				</tr>
-				<tr>
-					<td><span>7</span></td>
-					<td><span>8</span></td>
-					<td><span class="active">9</span></td>
-					<td><span>10</span></td>
-					<td><span>11</span></td>
-					<td><span>12</span></td>
-					<td><span>13</span></td>
-				</tr>
-				<tr>
-					<td><span class="active">14</span></td>
-					<td><span>15</span></td>
-					<td><span>16</span></td>
-					<td><span>17</span></td>
-					<td><span class="active">18</span></td>
-					<td><span>19</span></td>
-					<td><span>20</span></td>
-				</tr>
-				<tr>
-					<td><span>21</span></td>
-					<td><span>22</span></td>
-					<td><span>23</span></td>
-					<td><span>24</span></td>
-					<td><span>25</span></td>
-					<td><span>27</span></td>
-					<td><span>27</span></td>
-				</tr>
-				<tr>
-					<td><span>28</span></td>
-					<td><span>29</span></td>
-					<td><span>31</span></td>
-					<td><span>1</span></td>
-					<td><span>2</span></td>
-					<td><span>3</span></td>
-					<td><span>4</span></td>
-				</tr>
-				<tr>
-					<td><span> </span></td>
-					<td><span> </span></td>
-					<td><span> </span></td>
-					<td><span> </span></td>
-					<td><span> </span></td>
-					<td><span> </span></td>
-					<td><span> </span></td>
-				</tr>
-			</tbody>
+            </div>
+            <table id="calTable" class="calTable">
+                <thead>
+                    <tr>
+                        <th>LUN</th>
+                        <th>MAR</th>
+                        <th>MER</th>
+                        <th>JEU</th>
+                        <th>VEN</th>
+                        <th>SAM</th>
+                        <th>DIM</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span>30</span></td>
+                        <td><span>1</span></td>
+                        <td><span class="active">2</span></td>
+                        <td><span>3</span></td>
+                        <td><span>4</span></td>
+                        <td><span>5</span></td>
+                        <td><span>6</span></td>
+                    </tr>
+                    <tr>
+                        <td><span>7</span></td>
+                        <td><span>8</span></td>
+                        <td><span class="active">9</span></td>
+                        <td><span>10</span></td>
+                        <td><span>11</span></td>
+                        <td><span>12</span></td>
+                        <td><span>13</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="active">14</span></td>
+                        <td><span>15</span></td>
+                        <td><span>16</span></td>
+                        <td><span>17</span></td>
+                        <td><span class="active">18</span></td>
+                        <td><span>19</span></td>
+                        <td><span>20</span></td>
+                    </tr>
+                    <tr>
+                        <td><span>21</span></td>
+                        <td><span>22</span></td>
+                        <td><span>23</span></td>
+                        <td><span>24</span></td>
+                        <td><span>25</span></td>
+                        <td><span>27</span></td>
+                        <td><span>27</span></td>
+                    </tr>
+                    <tr>
+                        <td><span>28</span></td>
+                        <td><span>29</span></td>
+                        <td><span>31</span></td>
+                        <td><span>1</span></td>
+                        <td><span>2</span></td>
+                        <td><span>3</span></td>
+                        <td><span>4</span></td>
+                    </tr>
+                    <tr>
+                        <td><span> </span></td>
+                        <td><span> </span></td>
+                        <td><span> </span></td>
+                        <td><span> </span></td>
+                        <td><span> </span></td>
+                        <td><span> </span></td>
+                        <td><span> </span></td>
+                    </tr>
+                </tbody>
 
-		</table>
-	</div>
+            </table>
+        </div>
 
-	</div>
-  <div class="planners">
-    
-  </div>
-    
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
-      <script id="rendered-js" >
-const weekDays = [
-  'LUN','MAR','MER','JEU','VEN','SAM','DIM'
-];
-const monthName = [
-  'JANVIER','FEVRIER','MARS','AVRIL','MAI','JUIN','JUILLET','AOÛT','SEPTEMBRE','OCTOBRE','NOVEMBRE','DÉCEMBRE'
-];
+    </div>
+    <div class="planners">
 
-function displayMonth(numMonth, fullYear){
- var newPlanner = $('.planner-template').clone();
-  newPlanner.removeClass('planner-template').addClass(`month-${numMonth}`);
- $('#monthName',newPlanner).text(monthName[numMonth - 1] + " " + fullYear )
-var today = new Date(`${fullYear}-${numMonth}-01`);
-today.setDate(32)
-today.setDate(0)
-var lastDay = new Date(today);
-today.setDate(1);
-var firstDay = new Date(today);
-//console.log(firstDay.toString())
-//console.log(lastDay.toString());
+    </div>
 
-//console.log(firstDay.getDay())
-/*
- 0, 1, 2, 3, 4, 5, 6
- 6, 0, 1, 2, 3, 4, 5 => NON DUCON
- 6, 7, 8, 9,10,11,12 => OUI...
- %7 = 
- 6, 0, 1, 2, 3, 4, 5
- *-1 = 
--6, 0,-1,-2,-3,-4,-5
-*/
-var firstDisplayDay = new Date(firstDay);
-//LUNDI => PREMIER JOUR (ET PAS DIMANCHE, BANDE DE TANCHES...)
-firstDisplayDay.setDate(firstDisplayDay.getDate() - ((firstDay.getDay()+6) % 7));
-//console.log( firstDisplayDay.toString() )
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
+    <script id="rendered-js">
+        const weekDays = [
+            'LUN', 'MAR', 'MER', 'JEU', 'VEN', 'SAM', 'DIM'
+        ];
+        const monthName = [
+            'JANVIER', 'FEVRIER', 'MARS', 'AVRIL', 'MAI', 'JUIN', 'JUILLET', 'AOÛT', 'SEPTEMBRE', 'OCTOBRE', 'NOVEMBRE', 'DÉCEMBRE'
+        ];
+
+        function displayMonth(numMonth, fullYear) {
+            var newPlanner = $('.planner-template').clone();
+            newPlanner.removeClass('planner-template').addClass(`month-${numMonth}`);
+            $('#monthName', newPlanner).text(monthName[numMonth - 1] + " " + fullYear)
+            var today = new Date(`${fullYear}-${numMonth.toString().padStart(2,"0")}-01`);
+            today.setDate(32)
+            today.setDate(0)
+            var lastDay = new Date(today);
+            today.setDate(1);
+            var firstDay = new Date(today);
+            //console.log(firstDay.toString())
+            //console.log(lastDay.toString());
+
+            //console.log(firstDay.getDay())
+            /*
+             0, 1, 2, 3, 4, 5, 6
+             6, 0, 1, 2, 3, 4, 5 => NON DUCON
+             6, 7, 8, 9,10,11,12 => OUI...
+             %7 = 
+             6, 0, 1, 2, 3, 4, 5
+             *-1 = 
+            -6, 0,-1,-2,-3,-4,-5
+            */
+            var firstDisplayDay = new Date(firstDay);
+            //LUNDI => PREMIER JOUR (ET PAS DIMANCHE, BANDE DE TANCHES...)
+            firstDisplayDay.setDate(firstDisplayDay.getDate() - ((firstDay.getDay() + 6) % 7));
+            //console.log( firstDisplayDay.toString() )
 
 
-var lastDisplayDay = new Date(lastDay);
-lastDisplayDay.setDate( lastDisplayDay.getDate() + (6 - (lastDisplayDay.getDay()+6)%7) )
-//console.log( lastDisplayDay.toString() )
-var pointerDate = new Date(firstDisplayDay);
-for(var i=0;pointerDate <= lastDisplayDay; pointerDate.setDate(pointerDate.getDate() + 1), i++)
-  {
-  //console.log(pointerDate.toString());
-    //console.log(`#calTable tbody tr[${Math.floor(i/7)}] td[${i%7}]`);
-    var currSpanDate = $(`#calTable tbody tr:nth-child(${Math.floor(i/7)+1}) td:nth-child(${i%7 +1}) span`,newPlanner);
-    currSpanDate.text(pointerDate.getDate());
-    if(pointerDate.getMonth() + 1 != numMonth)
-      {
-       currSpanDate.addClass('outOfMonth');
-      }
-    else
-       currSpanDate.removeClass('outOfMonth');
-  }
-  //console.log("i: " + Math.floor(i/7))
-  //console.log(i + " " + lastDisplayDay)
-  //i--;
-  var lastWeekNum = Math.floor(i/7);
-  //console.log(i + " " + lastWeekNum)
-  if( lastWeekNum < 6)
-    {      
-      $('#calTable',newPlanner).removeClass('compress');
-    }
-  else
-    $('#calTable',newPlanner).addClass('compress');
-  $(`#calTable tbody tr`,newPlanner).show();
-  for(lastWeekNum++;lastWeekNum < 7;lastWeekNum++)
-    {  
-      //console.log(monthName[numMonth - 1] + " is hidding " + lastWeekNum)
-      $(`#calTable tbody tr:nth-child(${lastWeekNum})`,newPlanner).hide();
-      //$('#calTable').addClass('compress');  
-    }
-  /*
-  if( lastWeekNum < 6)
-    {
-      $(`#calTable tbody tr:nth-child(6)`).hide();
-      $('#calTable').removeClass('compress');
-    }
-  else
-    {
-      $(`#calTable tbody tr:nth-child(6)`).show();
-      $('#calTable').addClass('compress');      
-    }
-  */ 
-  $(".calendar-header .btn-next",newPlanner).hide();
-  
-  $(".calendar-header .btn-prev",newPlanner).hide();
-  $(`#calTable`,newPlanner).attr("id",'calTable' + numMonth + fullYear);
-  $('.planners').append(newPlanner);
-  $('.planners').append($('<div class="pageSep"/>'));
-  }
+            var lastDisplayDay = new Date(lastDay);
+            lastDisplayDay.setDate(lastDisplayDay.getDate() + (6 - (lastDisplayDay.getDay() + 6) % 7))
+                //console.log( lastDisplayDay.toString() )
+            var pointerDate = new Date(firstDisplayDay);
+            for (var i = 0; pointerDate <= lastDisplayDay; pointerDate.setDate(pointerDate.getDate() + 1), i++) {
+                //console.log(pointerDate.toString());
+                //console.log(`#calTable tbody tr[${Math.floor(i/7)}] td[${i%7}]`);
+                var currSpanDate = $(`#calTable tbody tr:nth-child(${Math.floor(i/7)+1}) td:nth-child(${i%7 +1}) span`, newPlanner);
+                currSpanDate.text(pointerDate.getDate());
+                if (pointerDate.getMonth() + 1 != numMonth) {
+                    currSpanDate.addClass('outOfMonth');
+                } else
+                    currSpanDate.removeClass('outOfMonth');
+            }
+            //console.log("i: " + Math.floor(i/7))
+            //console.log(i + " " + lastDisplayDay)
+            //i--;
+            var lastWeekNum = Math.floor(i / 7);
+            //console.log(i + " " + lastWeekNum)
+            if (lastWeekNum < 6) {
+                $('#calTable', newPlanner).removeClass('compress');
+            } else
+                $('#calTable', newPlanner).addClass('compress');
+            $(`#calTable tbody tr`, newPlanner).show();
+            for (lastWeekNum++; lastWeekNum < 7; lastWeekNum++) {
+                //console.log(monthName[numMonth - 1] + " is hidding " + lastWeekNum)
+                $(`#calTable tbody tr:nth-child(${lastWeekNum})`, newPlanner).hide();
+                //$('#calTable').addClass('compress');  
+            }
+            /*
+            if( lastWeekNum < 6)
+              {
+                $(`#calTable tbody tr:nth-child(6)`).hide();
+                $('#calTable').removeClass('compress');
+              }
+            else
+              {
+                $(`#calTable tbody tr:nth-child(6)`).show();
+                $('#calTable').addClass('compress');      
+              }
+            */
+            $(".calendar-header .btn-next", newPlanner).hide();
 
-//var now = new Date();
-var startDate = new Date();
-startDate.setMonth(0);
-var endDate = new Date();
-endDate.setMonth(11);
-var search = document.location.search.substr(1).split('&');
-var searches = {};
-search.forEach((s) => searches[s.split('=')[0]] = s.split('=')[1])
-console.log(searches)
-if(searches['start'])
-  startDate = new Date(searches['start']);
-if(searches['end'])
-  endDate = new Date(searches['end']);
-else if(searches['start'])
-  {endDate = new Date(startDate);endDate.setMonth( endDate.getMonth() + 12 );}
+            $(".calendar-header .btn-prev", newPlanner).hide();
+            $(`#calTable`, newPlanner).attr("id", 'calTable' + numMonth + fullYear);
+            $('.planners').append(newPlanner);
+            $('.planners').append($('<div class="pageSep"/>'));
+        }
 
-if(searches['printFullPage'])
-  $('body').addClass('printFullPage');
-for(var currMonth = new Date(startDate); currMonth <= endDate; currMonth.setMonth( currMonth.getMonth() + 1))
-  displayMonth(currMonth.getMonth() + 1, currMonth.getFullYear() );
-  
-  
-</script>
+        //var now = new Date();
+        var startDate = new Date();
+        startDate.setMonth(0);
+        var endDate = new Date();
+        endDate.setMonth(11);
+        var search = document.location.search.substr(1).split('&');
+        var searches = {};
+        search.forEach((s) => searches[s.split('=')[0]] = s.split('=')[1])
+        console.log(searches)
+        if (searches['start'])
+            startDate = new Date(searches['start']);
+        if (searches['end'])
+            endDate = new Date(searches['end']);
+        else if (searches['start']) {
+            endDate = new Date(startDate);
+            endDate.setMonth(endDate.getMonth() + 12);
+        }
 
-  
+        if (searches['printFullPage'])
+            $('body').addClass('printFullPage');
+        for (var currMonth = new Date(startDate); currMonth <= endDate; currMonth.setMonth(currMonth.getMonth() + 1))
+            displayMonth(currMonth.getMonth() + 1, currMonth.getFullYear());
+    </script>
+
+
 
 </body>
 
 </html>
- 
