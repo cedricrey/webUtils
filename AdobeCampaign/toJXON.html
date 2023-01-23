@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <title>XML to JXON converter</title>
+
+
+
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        div,
+        ul,
+        li {
+            list-style-type: none;
+        }
+        
+        body {
+            font-family: 'Open Sans', sans-serif;
+        }
+        
+        pre#result {
+            font-family: monospace;
+            font-size: 0.8em;
+        }
+        
+        pre.processed {
+            color: #555;
+            background-color: rgb(252, 255, 221);
+        }
+        
+        pre.error {
+            color: rgb(138, 0, 0);
+            background-color: rgb(253, 183, 183);
+            border: 1px solid rgb(138, 0, 0);
+        }
+    </style>
+
+    <script>
+        window.console = window.console || function(t) {};
+    </script>
+
+
+
+    <script>
+    </script>
+
+
+</head>
+
+<body translate="no">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <h1>XML to JXON converter </h1>
+    <p>JXON is an Adobe Campaign (Neolane) JSON special format, replacing the 'XML' E4X old notation</p>
+    <div>
+        <label for="xmlContent">Please paste your XML here :</label><br/>
+        <textarea name="" id="xmlContent" cols="130" rows="25"></textarea><br/>
+        <input type="button" value="Transform" id="transformButton" />
+        <pre id="result" class=""></pre>
+    </div>
+
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
+    <script>
+        function toJXON(domDocument) {
+            function transformElement(domDocument) {
+                var obj = {};
+                var attrs = domDocument.attributes;
+                var attrsKeys = Object.keys(attrs)
+                    //for (var k in attrs) {
+                attrsKeys.forEach(k => {
+                    var attr = attrs[k];
+                    obj[attr.name] = attr.value;
+                });
+                var elms = domDocument.children;
+                var elmsKeys = Object.keys(elms)
+                    //for (var k in elms) {
+                elmsKeys.forEach(k => {
+                    var tagName = elms[k].tagName;
+                    //multiple children management
+                    if (obj[tagName]) {
+                        if (obj[tagName].constructor != Array)
+                            obj[tagName] = [obj[tagName]];
+                        obj[tagName].push(transformElement(elms[k]));
+                    } else
+                        obj[tagName] = transformElement(elms[k]);
+                });
+                var childs = domDocument.childNodes
+                var childsKeys = Object.keys(childs)
+                    //for( var k in childs ){
+                childsKeys.forEach(k => {
+                    var child = childs[k];
+                    if ((child.nodeType == 3 || child.nodeType == 4) && child.nodeValue.replace(/^\s+$/m, '') != "") {
+                        obj['$'] = child.nodeValue;
+                    }
+                });
+                return obj;
+            }
+            var rootObj = {};
+            //If document and not element
+            if (domDocument.nodeType == 9)
+                domDocument = domDocument.firstChild;
+            rootObj[domDocument.tagName] = transformElement(domDocument);
+            return rootObj;
+        }
+        let parser = new DOMParser();
+        let xmlDoc;
+        $('#transformButton').on('click', () => {
+            try {
+                xmlDoc = parser.parseFromString($('#xmlContent').val(), "text/xml");
+                $('#result').html(JSON.stringify(toJXON(xmlDoc), null, 2)).addClass('processed').removeClass('error');
+            } catch (e) {
+                //console.log('Detection d\'erreur: ', xmlDoc)
+                var msg = e;
+                if (xmlDoc && xmlDoc.children && xmlDoc.children[0] && xmlDoc.children[0].tagName == "parsererror")
+                    e += "\n" + xmlDoc.children[0].textContent.replace(/</gi, "&lt;").replace(/>/gi, "&gt;");
+                $('#result').html(e).addClass('error').removeClass('processed');
+            }
+        })
+    </script>
+
+
+
+</body>
+
+</html>
